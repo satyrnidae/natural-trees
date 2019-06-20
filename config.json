@@ -1,0 +1,23 @@
+{
+  "archivesbasename": "naturaltrees",
+  "forge": {
+    "version": "14.23.5.2768"
+  },
+  "group": "dev.satyrn.naturaltrees",
+  "mcp": {
+    "version": "snapshot_20171003"
+  },
+  "modid": "naturaltrees",
+  "name": "Dynamic Trees - Natura",
+  "sponge": {
+    "version": "0.7.5-SNAPSHOT"
+  },
+  "version": {
+    "extension": "SNAPSHOT",
+    "major": 0,
+    "minecraft": "1.12.2",
+    "minor": 0,
+    "api": 0,
+    "patch": 0
+  }
+}

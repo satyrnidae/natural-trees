@@ -1,0 +1,58 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Team Foundation Server
+$tf
+
+# Gradle Wrapper
+.gradle/
+!gradle-wrapper.jar
+
+# Build Output / Temp Directories
+build/
+run/
+out/
+eclipse/
+temp/
+bin/
+
+# IntelliJ
+*.iws
+*.ipr
+*.iml
+.idea/
+
+#Visual Studio
+.vs/
+
+#vscode
+.vscode/
+bin/
+
+#eclipse
+.settings/
+*.launch
+.classpath
+.project
+
+#branch Files
+branch/
+
+# Misc
+CREDITS-fml.txt
+LICENSE-new.txt
+MinecraftForge-Credits.txt
+Paulscode IBXM Library License.txt
+Paulscode SoundSystem CodecIBXM License.txt
+README.txt
+forge-*-changelog.txt

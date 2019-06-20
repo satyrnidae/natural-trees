@@ -1,0 +1,152 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+    }
+}
+
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+sourceSets.api {
+    java {
+        srcDirs 'api/'
+    }
+}
+sourceSets.main {
+    java {
+        srcDirs 'src/main/java'
+    }
+}
+sourceSets.test {
+    java {
+        srcDirs 'tests/'
+    }
+}
+
+def modConfig
+
+file "./config.json" withReader {
+    modConfig = new groovy.json.JsonSlurper().parseText(it.text)
+}
+
+def shortVersion = "${modConfig.version.major}.${modConfig.version.api}.${modConfig.version.minor}.${modConfig.version.patch}"
+version = "${modConfig.version.minecraft}-${shortVersion}-${modConfig.version.extension}"
+
+println "Current version is ${version}"
+group= "${modConfig.group}"
+archivesBaseName = "${modConfig.archivesbasename}"
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+build {
+}
+
+artifacts {
+}
+
+minecraft {
+    version = "${modConfig.version.minecraft}-${modConfig.forge.version}"
+    runDir = "run"
+
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = modConfig.mcp.version
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    replace '@NAME@', modConfig.name
+    replace '@MODID@', modConfig.modid
+    replace '@VERSION@', shortVersion
+    replace '@MCVERSION@', modConfig.version.minecraft
+}
+
+repositories {
+    maven { url = 'http://repo.spongepowered.org/maven' }
+}
+
+dependencies {
+    compile files("libs/DynamicTrees-1.12.2-0.9.5-deobf.jar")
+    compile files("libs/Mantle-1.12-1.3.3.DEV.d9291f5-deobf.jar")
+    compile files("libs/natura-1.12.2-4.3.2.DEV.3662d2a-deobf.jar")
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    exclude 'mantle_at.cfg'
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':shortVersion, 'mcversion':project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+        exclude 'mantle_at.cfg'
+    }
+
+	// copy LICENSE
+    from('/') {
+        include 'LICENSE'
+        include 'CREDITS'
+    }
+}
+
+jar {
+    manifest.attributes(
+            'Built-By': System.properties['user.name'],
+            'Created-By': "${System.properties['java.vm.version']} (${System.properties['java.vm.vendor']})",
+            'Implementation-Title': project.name,
+            'Implementation-Version': version,
+            'Implementation-Vendor': 'https://satyrn.dev',
+            'FMLCorePlugin': "${project.group}.coremod.WolfArmorCore",
+            'ForceLoadAsMod': true,
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'TweakOrder': 0,
+            'MixinConfigs': 'mixins.wolfarmor.core.json',
+            'FMLAT': 'wolfarmor_at.cfg'
+    )
+}
+
+task updatePatchNumber() {
+    dependsOn build
+    gradle.taskGraph.whenReady {taskGraph ->
+        if(taskGraph.hasTask(compileJava) &&
+                taskGraph.hasTask(assemble) &&
+                taskGraph.hasTask(build)) {
+            modConfig.version.patch += 1
+            def configFile = new File('./config.json')
+            configFile.delete()
+            configFile.write(new groovy.json.JsonBuilder(modConfig).toPrettyString())
+            println "Patch number updated to ${modConfig.version.patch}"
+        }
+    }
+}
+
+task updateModVersion(type:Copy) {
+    from('src/main/java') {
+        exclude 'mcmod.info'
+    }
+    into 'build/sources/main/java'
+    expand 'version':shortVersion, 'mcversion':project.minecraft.version
+}
+
+
+compileJava.dependsOn updateModVersion
+updatePatchNumber.shouldRunAfter build
