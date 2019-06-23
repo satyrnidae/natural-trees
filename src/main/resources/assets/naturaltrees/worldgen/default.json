@@ -1,9 +1,8 @@
 [
   {
-    "__comment": "Tree generation in vanilla jungle biomes",
+    "__comment": "Tree generation in jungle biomes",
     "select": {
-      "type": "jungle",
-      "name": "minecraft:.*"
+      "type": "jungle"
     },
     "apply": {
       "species": {
