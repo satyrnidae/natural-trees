@@ -1,0 +1,42 @@
+{
+  "maple": {
+    "color": "@naturaltrees:maple",
+    "leaves": "natura:overworld_leaves type=maple"
+  },
+  "amaranth": {
+    "color": "@naturaltrees:amaranth",
+    "leaves": "natura:overworld_leaves type=amaranth"
+  },
+  "silverbell": {
+    "color": "@naturaltrees:silverbell",
+    "leaves": "natura:overworld_leaves type=silverbell"
+  },
+  "tiger": {
+    "color": "@naturaltrees:tiger",
+    "leaves": "natura:overworld_leaves type=tiger"
+  },
+  "willow": {
+    "color": "@naturaltrees:willow",
+    "leaves": "natura:overworld_leaves2 type=willow"
+  },
+  "eucalyptus": {
+    "color": "@naturaltrees:eucalyptus",
+    "leaves": "natura:overworld_leaves2 type=eucalyptus"
+  },
+  "hopseed": {
+    "color": "@naturaltrees:hopseed",
+    "leaves": "natura:overworld_leaves2 type=hopseed"
+  },
+  "sakura": {
+    "color": "@naturaltrees:sakura",
+    "leaves": "natura:overworld_leaves2 type=sakura"
+  },
+  "redwood": {
+    "color": "@naturaltrees:redwood",
+    "leaves": "natura:redwood_leaves type=normal"
+  },
+  "ghostwood": {
+    "color": "@naturaltrees:nether",
+    "leaves": "natura:nether_leaves type=ghostwood"
+  }
+}

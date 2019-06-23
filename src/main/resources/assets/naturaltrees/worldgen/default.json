@@ -1,0 +1,21 @@
+[
+  {
+    "__comment": "Tree generation in vanilla jungle biomes",
+    "select": {
+      "type": "jungle",
+      "name": "minecraft:.*"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "jungle": 19,
+          "amaranth": 1
+        }
+      },
+      "chance": 1.0,
+      "forestness": 1.0,
+      "density" : { "math": { "div" : [ "noise", 3.0 ] } },
+      "multipass" : true
+    }
+  }
+]
