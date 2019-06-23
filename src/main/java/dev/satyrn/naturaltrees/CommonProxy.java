@@ -10,6 +10,7 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
+		NaturalTreesContent.init(event);
 	}
 
 	protected void registerModels() {}

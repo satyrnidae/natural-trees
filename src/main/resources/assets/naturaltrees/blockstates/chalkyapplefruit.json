@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "age=0": { "model": "naturaltrees:chalkyapple0" },
+    "age=1": { "model": "naturaltrees:chalkyapple1" },
+    "age=2": { "model": "naturaltrees:chalkyapple2" },
+    "age=3": { "model": "naturaltrees:chalkyapple3" }
+  }
+}

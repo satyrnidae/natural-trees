@@ -16,5 +16,16 @@
       "density" : { "math": { "div" : [ "noise", 3.0 ] } },
       "multipass" : true
     }
+  },
+  {
+    "__comment": "Natura nether gen",
+    "select": {
+      "type": "nether"
+    },
+    "apply": {
+      "species": "darkwood",
+      "chance": 0.625,
+      "subterranean": true
+    }
   }
 ]

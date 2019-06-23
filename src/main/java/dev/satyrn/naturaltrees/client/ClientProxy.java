@@ -2,7 +2,7 @@ package dev.satyrn.naturaltrees.client;
 
 import com.ferreusveritas.dynamictrees.api.client.ModelHelper;
 import com.ferreusveritas.dynamictrees.blocks.BlockDynamicLeaves;
-import com.ferreusveritas.dynamictrees.blocks.LeavesPaging;
+import com.ferreusveritas.dynamictrees.blocks.BlockRooty;
 import com.ferreusveritas.dynamictrees.client.BlockColorMultipliers;
 
 import com.ferreusveritas.dynamictrees.trees.TreeFamily;
@@ -13,7 +13,11 @@ import com.progwml6.natura.overworld.block.logs.BlockOverworldLog2;
 import dev.satyrn.naturaltrees.CommonProxy;
 import dev.satyrn.naturaltrees.NaturalTrees;
 import dev.satyrn.naturaltrees.NaturalTreesContent;
+import dev.satyrn.naturaltrees.event.ModelBakeEventListener;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,6 +29,8 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void registerModels() {
     super.registerModels();
+
+    ModelLoader.setCustomStateMapper(NaturalTreesContent.blockRootyTaintedSoil, new StateMap.Builder().ignore(BlockRooty.LIFE).build());
 
     for(TreeFamily tree : NaturalTreesContent.naturalTrees) {
       ModelHelper.regModel(tree.getDynamicBranch());
@@ -42,15 +48,27 @@ public class ClientProxy extends CommonProxy {
   private void registerColorHandlers() {
     final BlockDynamicLeaves amaranth = (BlockDynamicLeaves)NaturalTreesContent.leaves.get("amaranth").getDynamicLeavesState().getBlock();
     ModelHelper.regColorHandler(amaranth, (state, worldIn, pos, tintIndex) -> LeavesColorizer.getOverworldLeavesColorForPos(worldIn, pos, BlockOverworldLog.LogType.AMARANTH));
+
+    ModelHelper.regColorHandler(NaturalTreesContent.blockRootyTaintedSoil, (state, worldIn, pos, tintIndex) -> {
+      if (tintIndex == 1) {
+        return state.getBlock() instanceof BlockRooty ? ((BlockRooty) state.getBlock()).rootColor(state, worldIn, pos) : 0xFFFFFFFF;
+      }
+      return 0xFFFFFFFF;
+    });
   }
 
   @Override
   public void preInit(FMLPreInitializationEvent event) {
     super.preInit(event);
     registerJsonColorHandlers();
+    registerClientEventHandlers();
   }
 
-  protected void registerJsonColorHandlers() {
+  private void registerClientEventHandlers() {
+    MinecraftForge.EVENT_BUS.register(new ModelBakeEventListener());
+  }
+
+  private void registerJsonColorHandlers() {
     // Overworld Leaves 1
     BlockColorMultipliers.register(new ResourceLocation(NaturalTrees.MOD_ID, "maple"),
             (state, worldIn, pos, tintIndex) -> LeavesColorizer.getOverworldLeavesColorForPos(worldIn, pos, BlockOverworldLog.LogType.MAPLE));

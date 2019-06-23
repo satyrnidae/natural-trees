@@ -31,12 +31,25 @@
     "color": "@naturaltrees:sakura",
     "leaves": "natura:overworld_leaves2 type=sakura"
   },
-  "redwood": {
-    "color": "@naturaltrees:redwood",
-    "leaves": "natura:redwood_leaves type=normal"
-  },
   "ghostwood": {
     "color": "@naturaltrees:nether",
-    "leaves": "natura:nether_leaves type=ghostwood"
+    "leaves": "natura:nether_leaves type=ghostwood",
+    "light": 0,
+    "flammability": 0,
+    "fireSpreadSpeed": 0
+  },
+  "bloodwood": {
+    "color": "@naturaltrees:nether",
+    "leaves": "natura:nether_leaves type=bloodwood",
+    "light": 0,
+    "flammability": 0,
+    "fireSpreadSpeed": 0
+  },
+  "darkwood": {
+    "color": "@naturaltrees:nether",
+    "leaves": "natura:nether_leaves2 type=darkwood",
+    "light": 0,
+    "flammability": 0,
+    "fireSpreadSpeed": 0
   }
 }

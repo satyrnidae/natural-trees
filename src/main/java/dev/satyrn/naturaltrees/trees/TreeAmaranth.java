@@ -20,7 +20,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 // Amaranth Trees
-public class TreeAmaranth extends TreeFamily {
+public class TreeAmaranth extends NaturalTreeFamily {
 
     public class TreeAmaranthSpecies extends Species {
 
@@ -55,11 +55,6 @@ public class TreeAmaranth extends TreeFamily {
     public TreeAmaranth() {
         super(new ResourceLocation(NaturalTrees.MOD_ID, "amaranth"));
         NaturalTreesContent.leaves.get("amaranth").setTree(this);
-    }
-
-    @Override
-    public TreeFamily setPrimitiveLog(IBlockState block) {
-        return super.setPrimitiveLog(block);
     }
 
     @Override

@@ -1,3 +1,7 @@
 tile.naturaltrees:amaranthbranch.name=Dynamic Amaranth Tree
-
+tile.naturaltrees:amaranthbranchx.name=Dynamic Amaranth Tree
 item.naturaltrees:amaranthseed.name=Amaranth Seed
+
+tile.naturaltrees:darkwoodbranch.name=Dynamic Darkwood Tree
+tile.naturaltrees:darkwoodbranchx.name=Dynamic Darkwood Tree
+item.naturaltrees:darkwoodseed.name=Darkwood Seed
