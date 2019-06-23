@@ -27,8 +27,8 @@ public class TreeAmaranth extends TreeFamily {
         public TreeAmaranthSpecies(TreeFamily treeFamily) {
             super(treeFamily.getName(), treeFamily, NaturalTreesContent.leaves.get("amaranth"));
 
-            setBasicGrowingParameters(0.6f, 18.0f, 2, 6, 0.75f);
-            setGrowthLogicKit(new ConiferLogic(5.0f).setHeightVariation(2));
+            setBasicGrowingParameters(0.6f, 18.0f, 3, 4, 0.75f);
+            setGrowthLogicKit(new ConiferLogic(5.0f).setHeightVariation(3).setHorizontalLimiter(3.0f));
 
             envFactor(BiomeDictionary.Type.COLD, 0.15f);
             envFactor(BiomeDictionary.Type.DRY, 0.10f);
@@ -70,6 +70,11 @@ public class TreeAmaranth extends TreeFamily {
 
     @Override
     public boolean autoCreateBranch() {
+        return true;
+    }
+
+    @Override
+    public boolean isThick() {
         return true;
     }
 }
