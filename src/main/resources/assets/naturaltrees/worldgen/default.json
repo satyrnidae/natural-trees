@@ -23,7 +23,12 @@
       "type": "nether"
     },
     "apply": {
-      "species": "darkwood",
+      "species": {
+        "random": {
+          "darkwood": 5,
+          "fusewood": 1
+        }
+      },
       "chance": 0.625,
       "subterranean": true
     }

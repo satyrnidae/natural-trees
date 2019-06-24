@@ -1,8 +1,5 @@
 package dev.satyrn.naturaltrees.trees;
 
-import com.ferreusveritas.dynamictrees.blocks.BlockBranch;
-import com.ferreusveritas.dynamictrees.blocks.BlockBranchBasic;
-import com.ferreusveritas.dynamictrees.blocks.BlockBranchThick;
 import com.ferreusveritas.dynamictrees.blocks.BlockRooty;
 import com.ferreusveritas.dynamictrees.systems.featuregen.FeatureGenFruit;
 import com.ferreusveritas.dynamictrees.trees.Species;
@@ -70,11 +67,12 @@ public class TreeDarkwood extends NaturalTreeFamily {
     }
 
     @Override
-    public BlockBranch createBranch() {
-        String branchName = this.getName() + "branch";
-        BlockBranchThick branch = (BlockBranchThick)new BlockBranchThick(branchName).setFireSpreadSpeed(0).setFlammability(0);
-        branch.otherBlock = (BlockBranchThick)branch.otherBlock.setFireSpreadSpeed(0).setFlammability(0);
+    protected int getBranchFireSpreadSpeed() {
+        return 0;
+    }
 
-        return branch;
+    @Override
+    protected int getBranchFlammability() {
+        return 0;
     }
 }

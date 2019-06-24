@@ -18,6 +18,7 @@ import com.progwml6.natura.shared.NaturaCommons;
 import dev.satyrn.naturaltrees.blocks.BlockRootyTaintedSoil;
 import dev.satyrn.naturaltrees.trees.TreeAmaranth;
 import dev.satyrn.naturaltrees.trees.TreeDarkwood;
+import dev.satyrn.naturaltrees.trees.TreeFusewood;
 import dev.satyrn.naturaltrees.worldgen.NaturalTreesBiomeDataBasePopulator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -47,16 +48,17 @@ public class NaturalTreesContent {
 
     public static ArrayList<TreeFamily> naturalTrees = new ArrayList<>();
 
-    public static TreeAmaranth treeAmaranth;
+    private static TreeAmaranth treeAmaranth;
 
-    public static TreeDarkwood treeDarkwood;
+    private static TreeDarkwood treeDarkwood;
+    private static TreeFusewood treeFusewood;
 
     public static Map<String, ILeavesProperties> leaves;
 
     public static BlockFruit blockChalkyApple;
     public static BlockRootyTaintedSoil blockRootyTaintedSoil;
 
-    public static void preInit(FMLPreInitializationEvent event) {
+    static void preInit(FMLPreInitializationEvent event) {
         leaves = LeavesPaging.build(new ResourceLocation(NaturalTrees.MOD_ID, "leaves/natura.json"));
         leaves.put("saguaro", new LeavesProperties(null, ItemStack.EMPTY, TreeRegistry.findCellKit("bare")));
 
@@ -64,16 +66,8 @@ public class NaturalTreesContent {
         blockRootyTaintedSoil = new BlockRootyTaintedSoil(false);
     }
 
-    public static void init(FMLInitializationEvent event) {
-        ArrayList<Block> darkwoodBlocks = new ArrayList<>();
-        treeDarkwood.getRegisterableBlocks(darkwoodBlocks);
-
-        darkwoodBlocks.forEach(block -> {
-            Blocks.FIRE.setFireInfo(block, 0, 0);
-            System.out.println(block.getFlammability(null, null, null));
-        });
-
-
+    static void init(FMLInitializationEvent event) {
+        //TODO: any init events for content
     }
 
     @SubscribeEvent
@@ -90,23 +84,17 @@ public class NaturalTreesContent {
 
         registry.registerAll(items.toArray(new Item[0]));
 
-        treeAmaranth.setPrimitiveLog(NaturaOverworld.overworldLog.getDefaultState().withProperty(BlockOverworldLog.TYPE, BlockOverworldLog.LogType.AMARANTH));
-        treeAmaranth.setStick(NaturaCommons.amaranth_stick);
-        treeDarkwood.setPrimitiveLog(NaturaNether.netherLog.getDefaultState().withProperty(BlockNetherLog.TYPE, BlockNetherLog.LogType.DARKWOOD));
-        treeDarkwood.setStick(NaturaCommons.darkwood_stick);
         blockChalkyApple.setDroppedItem(new ItemStack(NaturaCommons.edibles, 1, 10)); // chalky apple
-        Objects.requireNonNull(Species.REGISTRY.getValue(new ResourceLocation(NaturalTrees.MOD_ID, "darkwood"))).addAcceptableSoil(NaturaNether.netherTaintedSoil);
+
+        initializeTreeLogs();
+        initializeTreeSticks();
+        setNetherTreeAcceptableSoils();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 
-        treeAmaranth = new TreeAmaranth();
-        treeDarkwood = new TreeDarkwood();
-
-        Collections.addAll(naturalTrees, treeAmaranth, treeDarkwood);
-
-        naturalTrees.forEach(tree -> tree.registerSpecies(Species.REGISTRY));
+        registerTrees();
 
         final IForgeRegistry<Block> registry = event.getRegistry();
 
@@ -126,5 +114,35 @@ public class NaturalTreesContent {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         NaturalTrees.proxy.registerModels();
+    }
+
+    private static void registerTrees() {
+        treeAmaranth = new TreeAmaranth();
+        treeDarkwood = new TreeDarkwood();
+        treeFusewood = new TreeFusewood();
+
+        Collections.addAll(naturalTrees, treeAmaranth, treeDarkwood, treeFusewood);
+
+        naturalTrees.forEach(tree -> tree.registerSpecies(Species.REGISTRY));
+    }
+
+    private static void initializeTreeLogs() {
+        treeAmaranth.setPrimitiveLog(NaturaOverworld.overworldLog.getDefaultState().withProperty(BlockOverworldLog.TYPE, BlockOverworldLog.LogType.AMARANTH));
+        treeDarkwood.setPrimitiveLog(NaturaNether.netherLog.getDefaultState().withProperty(BlockNetherLog.TYPE, BlockNetherLog.LogType.DARKWOOD));
+        treeFusewood.setPrimitiveLog(NaturaNether.netherLog.getDefaultState().withProperty(BlockNetherLog.TYPE, BlockNetherLog.LogType.FUSEWOOD));
+    }
+
+    private static void initializeTreeSticks() {
+        treeAmaranth.setStick(NaturaCommons.amaranth_stick);
+        treeDarkwood.setStick(NaturaCommons.darkwood_stick);
+        treeFusewood.setStick(NaturaCommons.fusewood_stick);
+    }
+
+    /**
+     * Adds natura tainted soil to the acceptable nether soil types
+     */
+    private static void setNetherTreeAcceptableSoils() {
+        Objects.requireNonNull(Species.REGISTRY.getValue(new ResourceLocation(NaturalTrees.MOD_ID, "darkwood"))).addAcceptableSoil(NaturaNether.netherTaintedSoil);
+        Objects.requireNonNull(Species.REGISTRY.getValue(new ResourceLocation(NaturalTrees.MOD_ID, "fusewood"))).addAcceptableSoil(NaturaNether.netherTaintedSoil);
     }
 }

@@ -51,5 +51,12 @@
     "light": 0,
     "flammability": 0,
     "fireSpreadSpeed": 0
+  },
+  "fusewood": {
+    "color": "@naturaltrees:nether",
+    "leaves": "natura:nether_leaves type=fusewood",
+    "light": 0,
+    "flammability": 0,
+    "fireSpreadSpeed": 0
   }
 }

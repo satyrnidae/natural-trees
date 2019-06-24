@@ -95,6 +95,6 @@ public class ClientProxy extends CommonProxy {
 
     // Nether
     BlockColorMultipliers.register(new ResourceLocation(NaturalTrees.MOD_ID, "nether"),
-            (state, worldIn, pos, tintIndex) -> LeavesColorizer.leaves2Color);
+            (state, worldIn, pos, tintIndex) -> LeavesColorizer.leavesColor);
   }
 }
